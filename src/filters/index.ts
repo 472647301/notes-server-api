@@ -8,7 +8,6 @@ export class AppExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest();
     const exc = exception || {};
     const status = exc.getStatus ? exception.getStatus() : 500;
-    console.error(exc)
     response.status(status).json({
       code: status,
       success: false,

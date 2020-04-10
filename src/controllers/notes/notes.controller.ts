@@ -63,7 +63,7 @@ export class NotesController {
   }
 
   /**
-   * 移除协作者
+   * 获取笔记
    */
   @Get('/notes/find')
   find(@Req() request: Request) {
