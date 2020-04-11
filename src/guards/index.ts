@@ -22,6 +22,7 @@ export class AuthGuard implements CanActivate {
       request.headers.nickname = jwtPayload ? jwtPayload.nickname : '';
       return Boolean(jwtPayload);
     } catch (err) {
+      context.switchToHttp().getResponse().statusCode = 401;
       return false;
     }
   }

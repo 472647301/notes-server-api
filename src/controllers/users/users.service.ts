@@ -1,5 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { JwtPayload, UserDto, UserLogin } from './users.dto';
+import {
+  JwtPayload,
+  UserDto,
+  UserLogin,
+  Nickname,
+  Password,
+} from './users.dto';
 import {
   USERS_MODEL,
   responseSuccess,
@@ -28,8 +34,8 @@ export class UsersService {
   /**
    * 查询用户信息
    */
-  async info(email: string) {
-    return responseSuccess({ email });
+  async info(email: string, nickname: string) {
+    return responseSuccess({ email, nickname });
   }
 
   /**
@@ -86,10 +92,30 @@ export class UsersService {
   }
 
   /**
-   * 用户信息更新
+   * 用户昵称更新
    */
-  async update(user: Partial<UserDto>) {
-    return responseSuccess(user);
+  async nickname(email: string, user: Nickname) {
+    const _user = await this.usersModel.findOne({ email });
+    if (!_user) {
+      return responseFailure('账号不存在');
+    }
+    await this.usersModel.updateOne({ email }, { nickname: user.nickname });
+    return responseSuccess({ nickname: user.nickname, email });
+  }
+
+  /**
+   * 用户密码更新
+   */
+  async passeord(email: string, user: Password) {
+    const _user = await this.usersModel.findOne({ email });
+    if (!_user) {
+      return responseFailure('账号不存在');
+    }
+    if (_user.password !== user.old_password) {
+      return responseFailure('旧密码错误');
+    }
+    await this.usersModel.updateOne({ email }, { password: user.new_password });
+    return responseSuccess({});
   }
 
   /**

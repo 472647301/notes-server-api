@@ -5,15 +5,15 @@ export class AppExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
     const exc = exception || {};
-    const status = exc.getStatus ? exception.getStatus() : 500;
+    const _status = exc.getStatus ? exception.getStatus() : 500;
+    const status = response.statusCode || _status;
     response.status(status).json({
       code: status,
       success: false,
       timestamp: new Date().toLocaleString(),
       // path: request.url,
-      error: exc.message || 'Forbidden resource',
+      error: exc.message,
     });
   }
 }

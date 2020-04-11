@@ -42,6 +42,7 @@ export class NotesService {
       update_name: jwt.nickname,
       members: JSON.stringify({ [jwt.email]: jwt.nickname }),
     });
+    this.informMembers(WS_NOTES_UPDATE, { id: data._id }, data.members);
     return responseSuccess({ id: data._id });
   }
 

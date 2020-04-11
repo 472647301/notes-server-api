@@ -1,6 +1,6 @@
 import { Controller, Get, Body, Post, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserDto, UserLogin } from './users.dto';
+import { UserDto, UserLogin, Nickname, Password } from './users.dto';
 import { Request } from 'express';
 
 @Controller()
@@ -13,7 +13,8 @@ export class UsersController {
   @Get('/user/info')
   info(@Req() request: Request) {
     const email: string = <string>request.headers['email'];
-    return this.usersService.info(email);
+    const nickname: string = <string>request.headers['nickname'];
+    return this.usersService.info(email, nickname);
   }
 
   /**
@@ -42,11 +43,21 @@ export class UsersController {
   }
 
   /**
-   * 用户信息更新
+   * 用户昵称更新
    */
-  @Post('/user/update')
-  update(@Body() user: Partial<UserDto>) {
-    return this.usersService.update(user);
+  @Post('/user/nickname')
+  nickname(@Req() request: Request, @Body() user: Nickname) {
+    const email: string = <string>request.headers['email'];
+    return this.usersService.nickname(email, user);
+  }
+
+  /**
+   * 用户密码更新
+   */
+  @Post('/user/passeord')
+  passeord(@Req() request: Request, @Body() user: Password) {
+    const email: string = <string>request.headers['email'];
+    return this.usersService.passeord(email, user);
   }
 
   /**

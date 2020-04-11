@@ -25,3 +25,14 @@ export class UserLogin {
   @IsString()
   readonly password: string;
 }
+export class Nickname {
+  @IsString()
+  readonly nickname: string;
+}
+
+export class Password {
+  @IsString()
+  readonly old_password: string;
+  @IsString()
+  readonly new_password: string;
+}

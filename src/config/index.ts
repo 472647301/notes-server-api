@@ -59,16 +59,16 @@ export function sendEmail(email: string): Promise<{ code: string }> {
 /**
  * 删除笔记通知
  */
-export const WS_NOTES_ROMOVE = 'NOTES_ROMOVE';
+export const WS_NOTES_ROMOVE = 'WS_NOTES_ROMOVE';
 /**
  * 更新笔记通知
  */
-export const WS_NOTES_UPDATE = 'NOTES_UPDATE';
+export const WS_NOTES_UPDATE = 'WS_NOTES_UPDATE';
 /**
  * 添加成员通知
  */
-export const WS_NOTES_MEMBER_ADD = 'NOTES_MEMBER_ADD';
+export const WS_NOTES_MEMBER_ADD = 'WS_NOTES_MEMBER_ADD';
 /**
  * 移除成员通知
  */
-export const WS_NOTES_MEMBER_DELETE = 'NOTES_MEMBER_DELETE';
+export const WS_NOTES_MEMBER_DELETE = 'WS_NOTES_MEMBER_DELETE';

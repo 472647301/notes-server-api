@@ -90,6 +90,7 @@ export class EventsGateway {
           data.members,
         );
       }
+      return '';
     } catch (err) {
       return responseFailure('Token过期');
     }
