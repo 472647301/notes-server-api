@@ -81,7 +81,7 @@ export class UsersService {
     };
     // 签发token
     const token = jwt.sign(jwtPayload, app.name, { expiresIn: '7d' });
-    return responseSuccess({ token });
+    return responseSuccess({ token, nickname });
   }
 
   /**
