@@ -11,17 +11,25 @@ import {
   responseSuccess,
   responseFailure,
   sendEmail,
+  NOTES_MODEL,
+  WS_UPDATE_NICKNAME,
 } from '../../config';
 import { Users } from './users.interface';
+import { Notes } from '../notes/notes.interface';
 import { Model } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import * as app from '../../../package.json';
+import { EventsGateway } from '../../events/events.gateway';
+import * as WebSocket from 'ws';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(USERS_MODEL)
     private readonly usersModel: Model<Users>,
+    @Inject(NOTES_MODEL)
+    private readonly notesModel: Model<Notes>,
+    private readonly eventsGateway: EventsGateway,
   ) {}
 
   /**
@@ -100,6 +108,25 @@ export class UsersService {
       return responseFailure('账号不存在');
     }
     await this.usersModel.updateOne({ email }, { nickname: user.nickname });
+    const _id = [];
+    let _members;
+    const reg = new RegExp(email, 'i');
+    const data = await this.notesModel.find({ members: reg });
+    for (let i = 0; i < data.length; i++) {
+      const members = JSON.parse(data[i].members);
+      members[email] = user.nickname;
+      await this.notesModel.updateOne(
+        { _id: data[i]._id },
+        { members: JSON.stringify(members) },
+      );
+      _id.push(data[i]._id);
+      _members = Object.assign(_members || {}, members);
+    }
+    this.informMembers(
+      WS_UPDATE_NICKNAME,
+      { id: _id },
+      _members ? JSON.stringify(_members) : JSON.stringify({}),
+    );
     return responseSuccess({ nickname: user.nickname, email });
   }
 
@@ -140,5 +167,20 @@ export class UsersService {
       active_code: data.code,
     });
     return responseSuccess({ email });
+  }
+
+  /**
+   * 通知成员
+   */
+  public informMembers<T = any>(event: string, data: T, members: string) {
+    const server = this.eventsGateway.server;
+    const _members = JSON.parse(members);
+    server.clients.forEach(client => {
+      const isOpen = client.readyState === WebSocket.OPEN;
+      const isMember = client.protocol && _members[client.protocol];
+      if (isOpen && isMember) {
+        client.send(JSON.stringify({ event, data }));
+      }
+    });
   }
 }

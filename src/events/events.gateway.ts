@@ -13,6 +13,7 @@ import {
   WS_NOTES_ROMOVE,
   WS_NOTES_MEMBER_ADD,
   WS_NOTES_MEMBER_DELETE,
+  WS_UPDATE_NICKNAME,
 } from '../config';
 import * as jwt from 'jsonwebtoken';
 import * as app from '../../package.json';
@@ -56,6 +57,7 @@ export class EventsGateway {
             WS_NOTES_ROMOVE,
             WS_NOTES_MEMBER_ADD,
             WS_NOTES_MEMBER_DELETE,
+            WS_UPDATE_NICKNAME,
           },
         };
       }
