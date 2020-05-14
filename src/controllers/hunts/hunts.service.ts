@@ -2,6 +2,7 @@ import { Injectable, Inject, HttpService } from '@nestjs/common';
 import { HUNTS_MODEL } from '../../config';
 import { Model } from 'mongoose';
 import { Hunts } from './hunts.interface';
+import { Request } from 'express';
 
 @Injectable()
 export class HuntsService {

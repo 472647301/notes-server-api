@@ -1,5 +1,6 @@
 import { Controller, Get, Req } from '@nestjs/common';
 import { HuntsService } from './hunts.service';
+import { Request } from 'express';
 
 @Controller()
 export class HuntsController {
