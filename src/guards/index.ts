@@ -4,7 +4,12 @@ import { Request } from 'express';
 import * as app from '../../package.json';
 import { JwtPayload } from '../controllers/users/users.dto';
 
-const exclude = ['/send/code', '/user/login', '/user/register']; // 不需要鉴权的接口
+const exclude = [
+  '/send/code',
+  '/user/login',
+  '/user/register',
+  '/hunts/notice',
+]; // 不需要鉴权的接口
 
 @Injectable()
 export class AuthGuard implements CanActivate {
