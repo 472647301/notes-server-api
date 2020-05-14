@@ -3,6 +3,7 @@ import * as mailer from 'nodemailer';
 export const DATABASE_CONNECTION = 'DATABASE_CONNECTION';
 export const USERS_MODEL = 'USERS_MODEL';
 export const NOTES_MODEL = 'NOTES_MODEL';
+export const HUNTS_MODEL = 'HUNTS_MODEL';
 
 export function responseSuccess<T = any>(data: T) {
   return {
