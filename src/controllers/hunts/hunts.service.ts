@@ -13,10 +13,8 @@ export class HuntsService {
   ) {}
 
   async notice(request: Request) {
-    return this.httpService.get('http://127.0.0.1:8887/get_group_member_list', {
-      params: {
-        group_id: '296884495',
-      },
-    });
+    return this.httpService.get(
+      'http://127.0.0.1:8887/get_group_member_list?group_id=296884495',
+    );
   }
 }
