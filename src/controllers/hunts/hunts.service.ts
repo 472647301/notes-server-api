@@ -52,6 +52,7 @@ export class HuntsService {
   }
 
   async getGroupMemberList(group_id: number, member_id: number) {
+    await this.delay(2000);
     const group_member_list = this.httpService.post<
       CqhttpApi<Array<{ user_id: number }>>
     >(`${this.baseUrl}/get_group_member_list`, { group_id: group_id });
@@ -73,6 +74,12 @@ export class HuntsService {
       },
     );
     await send_group_msg.toPromise();
+  }
+
+  async delay(n: number) {
+    return new Promise(resolve => {
+      setTimeout(resolve, n);
+    });
   }
 
   public getClientIp(req: Request) {
