@@ -18,7 +18,7 @@ export class HuntsService {
     const ip = this.getClientIp(request);
     const group_id = <string>request.headers['GROUP_ID'];
     const member_id = <string>request.headers['MEMBER_ID'];
-    if (!ip) {
+    if (!ip || !member_id) {
       return responseFailure('参数错误');
     }
     const model = await this.huntsModel.findOne({ ip: ip });
@@ -46,7 +46,7 @@ export class HuntsService {
     }
     this.getGroupMemberList(
       group_id ? Number(group_id) : 296884495,
-      472647301,
+      Number(member_id),
     );
     return responseSuccess({});
   }
