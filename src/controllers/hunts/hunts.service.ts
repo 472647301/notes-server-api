@@ -18,6 +18,7 @@ export class HuntsService {
     const ip = this.getClientIp(request);
     const group_id = <string>request.headers['GROUP_ID'];
     const member_id = <string>request.headers['MEMBER_ID'];
+    const message = <string>request.headers['MESSAGE'];
     if (!ip || !member_id) {
       return responseFailure('参数错误');
     }
@@ -47,11 +48,16 @@ export class HuntsService {
     this.getGroupMemberList(
       group_id ? Number(group_id) : 296884495,
       Number(member_id),
+      message,
     );
     return responseSuccess({});
   }
 
-  async getGroupMemberList(group_id: number, member_id: number) {
+  async getGroupMemberList(
+    group_id: number,
+    member_id: number,
+    message?: string,
+  ) {
     await this.delay(2000);
     const group_member_list = this.httpService.post<
       CqhttpApi<Array<{ user_id: number }>>
@@ -66,11 +72,12 @@ export class HuntsService {
     if (!list.includes(member_id)) {
       return;
     }
+    const msg = message || '客户端已离线，请检查！';
     const send_group_msg = this.httpService.post(
       `${this.baseUrl}/send_group_msg`,
       {
         group_id: group_id,
-        message: `[CQ:at,qq=${member_id}] 客户端已离线，请检查！`,
+        message: `[CQ:at,qq=${member_id}] ${msg}`,
       },
     );
     await send_group_msg.toPromise();
